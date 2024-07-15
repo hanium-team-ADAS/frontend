@@ -1,0 +1,109 @@
+.login-component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .header {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .text {
+    font-size: 32px;
+    font-weight: 700;
+  }
+  
+  .form-login {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+  
+  .field-login {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .field-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #777;
+  }
+  
+  .field-login .input{
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .submit-login {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .submit-login .submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: 50%;
+    height: 45px;
+    color: #fff;
+    background: #007bff;
+    border: 0px;
+    border-radius: 22px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+  .submit-login .submit:hover {
+    background: linear-gradient(135deg, #0056b3, #007bff);
+    transform: translateY(-3px);
+  }
+  
+  .login-component .signUp {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  .doctor-signUp, .patient-signUp {
+    padding: 10px;
+    font-size: 11px;
+    color: #777;
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .doctor-signUp:hover, .patient-signUp:hover {
+    color: #0056b3;
+  }
+  
+  @media (max-width: 600px) {
+    .login-component {
+        padding: 20px;
+        max-width: 90%;
+    }
+    .header .text {
+        font-size: 28px;
+    }
+    .submit-login .submit {
+        width: 100%;
+    }
+  }
+  
