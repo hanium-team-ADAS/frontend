@@ -1,0 +1,58 @@
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 2rem;
+    z-index: 1000;  /* 다른 요소들보다 위에 표시 */
+  }
+  
+  .nav-logo {
+    font-size: 24px;
+    font-weight: bolder;
+  }
+  
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-menu li {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-home:hover,
+  .nav-reservation:hover,
+  .nav-treatment:hover {
+    color: #007BFF;
+  }
+  
+  .nav-login {
+    border-radius: 25px;
+    padding: 8px 20px;
+    background: #007BFF;
+    color: #fff;
+  }
+  
+  @media (max-width: 768px) {
+    .nav {
+      padding: 10px 1rem;
+    }
+  
+    .nav-logo {
+      font-size: 20px;
+    }
+  
+    .nav-menu {
+      gap: 10px;
+      font-size: 12px;
+    }
+  }
