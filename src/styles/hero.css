@@ -1,0 +1,41 @@
+.hero {
+    text-align: center;
+    width: 50%;
+    text-align: left;
+  }
+  
+  .hero-text {
+    color: #000;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+  }
+  
+  .sub-text {
+    color: #007BFF;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 4rem;
+  }
+
+  .hero-button {
+    display: inline-block;
+    border-radius: 5px;
+    padding: 0px 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    background: #007BFF;
+    color: #fff;
+    cursor: pointer;
+    margin-bottom: 3.5rem;
+  }
+
+  .logo img {
+    margin: 0.5rem; /* 간격 조절 */
+    width: 40px; /* 로고 크기 조절 */
+    height: auto;
+    transition: transform 0.3s;
+  }
