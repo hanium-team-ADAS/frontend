@@ -1,0 +1,85 @@
+/* Appointment.css */
+.appt-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40vw;
+    padding: 10px;
+}
+
+.appt-inputs, .appt-textarea {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px; /* 아래쪽 여백 추가 */
+}
+
+.appt-input {
+    width: 30%;
+}
+
+textarea {
+    width: 94%;
+    height: 100px;
+}
+
+.appt-input,
+textarea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border: 1px solid #ced4da; /* 테두리 색상 변경 */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 박스 그림자 추가 */
+}
+
+.appt-input select,
+.appt-input input {
+    width: 100%;
+    padding: 8px;
+    font-size: 15px;
+    border: 1px solid #fff;
+}
+
+.appt-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.appt-submit {
+    background: #007bff;
+}
+
+.appt-reset {
+    background: darkgrey;
+}
+
+.appt-submit,
+.appt-reset {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 45px;
+    color: #fff;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.appt-submit:hover,
+.appt-reset:hover {
+    background: linear-gradient(135deg, #0056b3, #007bff);
+    transform: scale(1.05); /* 호버 시 크기 증가 */
+}
+
+.appt-reset:hover {
+    background: linear-gradient(135deg, grey, darkgrey);
+}
