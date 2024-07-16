@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "professor": "Kim",
+        "date": "2024-07-20",
+        "time": "10:00 AM"
+    },
+    {
+        "id": 2,
+        "professor": "Lee",
+        "date": "2024-07-21",
+        "time": "02:00 PM"
+    },
+    {
+        "id": 3,
+        "professor": "Park",
+        "date": "2024-07-22",
+        "time": "11:00 AM"
+    }
+]
