@@ -7,24 +7,23 @@ import PatientSignUp from '../components/Auth/PatientSignUp';
 import DoctorAppt from '../components/Appt/DoctorAppt'
 import PatientAppt from '../components/Appt/PatientAppt'
 import PrivateRoute from '../components/PrivateRoute';
+import Treatment from '../components/Treatment/TreatPage';
 
 const AppRoutes = () => {
+    const userRole = 'doctor'; // 실제 사용자 역할 로직으로 교체 필요
+
     return (
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/doctorSignUp" element={<DoctorSignUp />} />
             <Route path="/patientSignUp" element={<PatientSignUp />} />
-            <Route path="/patientAppt" element={
+            <Route path="/appointment" element={
                 <PrivateRoute>
-                    <PatientAppt />
+                    {userRole === 'patient' ? <PatientAppt /> : <DoctorAppt />}
                 </PrivateRoute>
             } />
-            <Route path="/doctorAppt" element={
-                <PrivateRoute>
-                    <DoctorAppt />
-                </PrivateRoute>
-            } />
+            <Route path='/treatment' element={<Treatment />} />
         </Routes>
     );
 };
