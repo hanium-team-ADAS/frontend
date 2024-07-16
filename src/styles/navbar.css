@@ -30,7 +30,7 @@
   }
   
   .nav-home:hover,
-  .nav-reservation:hover,
+  .nav-appointment:hover,
   .nav-treatment:hover {
     color: #007BFF;
   }
