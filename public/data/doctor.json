@@ -1,0 +1,42 @@
+[
+    {
+      "id": 1,
+      "name": "Choi",
+      "major": "내과"
+    },
+    {
+      "id": 2,
+      "name": "Jang",
+      "major": "안과"
+    },
+    {
+        "id": 3,
+        "name": "Kim",
+        "major": "정형외과"
+      },
+      {
+        "id": 4,
+        "name": "Lee",
+        "major": "신경외과"
+      },
+      {
+        "id": 5,
+        "name": "Park",
+        "major": "이비인후과"
+      },
+      {
+          "id": 3,
+          "name": "Kim",
+          "major": "정형외과"
+        },
+        {
+          "id": 4,
+          "name": "Lee",
+          "major": "신경외과"
+        },
+        {
+          "id": 5,
+          "name": "Park",
+          "major": "이비인후과"
+        }
+  ]

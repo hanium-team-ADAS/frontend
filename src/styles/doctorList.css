@@ -1,0 +1,29 @@
+.doctorList {
+    width: 100%;
+    padding: 10px;
+    max-height: 220px;
+    overflow-y: auto; /* 세로 스크롤 설정 */
+  }
+
+  .doctorTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .doctorTable th, .doctorTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .doctorTable th {
+    background-color: #f2f2f2;
+  }
+  
+  .doctorTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .doctorTable tr:hover {
+    background-color: #e5e5e5;
+  }  
