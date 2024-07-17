@@ -1,0 +1,19 @@
+.doctorAppt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 왼쪽과 오른쪽으로 요소 배치 */
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+.checkAppt {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    gap: 5vw;
+}
