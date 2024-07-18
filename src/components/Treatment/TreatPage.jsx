@@ -14,6 +14,11 @@ const MyVideo = styled(Video)`
     width: 50vh;
 `;
 
+const StyledTakeTemp = styled(TakeTemp)`
+    height: 30vh;
+    width: 50vh;
+`;
+
 const TreatPage = () => {
     return (
         <div className="treatPage">
@@ -25,7 +30,7 @@ const TreatPage = () => {
                 </div>
             </div>
             <div className='rightSide'>
-                <TakeTemp />
+                <StyledTakeTemp />
                 <MyVideo />
             </div>
         </div>

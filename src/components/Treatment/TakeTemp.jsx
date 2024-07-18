@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import '../../styles/takeTemp.css'
 
-const TakeTemp = () => {
+const TakeTemp = ({className}) => {
   const [isReady, setIsReady] = useState(false);
   const [temperature, setTemperature] = useState(null);
   const [error, setError] = useState(null);
@@ -27,14 +28,14 @@ const TakeTemp = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
+    <div className={`takeTemp-component ${className}`}>
       <h3>체온 측정</h3>
       {!isReady && (
         <button onClick={prepareMeasurement}>체온 측정 준비</button>
       )}
       {isReady && (
         <>
-          <div style={{ margin: '20px 0', fontSize: '18px' }}>
+          <div className='showTemp'>
             {temperature !== null ? (
               <div>촬영된 체온: {temperature}°C</div>
             ) : (
