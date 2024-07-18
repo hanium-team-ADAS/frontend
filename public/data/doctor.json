@@ -2,41 +2,41 @@
     {
       "id": 1,
       "name": "Choi",
-      "major": "내과"
+      "major": "소아청년과"
     },
     {
       "id": 2,
-      "name": "Jang",
-      "major": "안과"
+      "name": "Jung",
+      "major": "가정의학과"
     },
     {
-        "id": 3,
-        "name": "Kim",
-        "major": "정형외과"
+      "id": 3,
+      "name": "Kim",
+      "major": "이비인후과"
       },
-      {
-        "id": 4,
-        "name": "Lee",
-        "major": "신경외과"
-      },
-      {
-        "id": 5,
-        "name": "Park",
-        "major": "이비인후과"
-      },
-      {
-          "id": 3,
-          "name": "Kim",
-          "major": "정형외과"
-        },
-        {
-          "id": 4,
-          "name": "Lee",
-          "major": "신경외과"
-        },
-        {
-          "id": 5,
-          "name": "Park",
-          "major": "이비인후과"
-        }
+    {
+      "id": 4,
+      "name": "Lee",
+      "major": "호흡기알레르기내과"
+    },
+    {
+      "id": 5,
+      "name": "Park",
+      "major": "감염내과"
+    },
+    {
+       "id": 6,
+       "name": "Joe",
+       "major": "호흡기내과"
+     },
+     {
+      "id": 7,
+       "name": "Han",
+       "major": "소아과"
+     },
+    {
+       "id": 8,
+       "name": "Seo",
+       "major": "이비인후과"
+     }
   ]
