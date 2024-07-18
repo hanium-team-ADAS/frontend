@@ -28,7 +28,7 @@ const ApptForm = () => {
     <div className='appt-container'>
       <form>
         <div className='appt-inputs'>
-          <div className="appt-input">
+            <div className="appt-input">
               <select onChange={handleDoctorChange}>
                 <option value="-1">의사 선택</option>
                   {doctorData.map((doctor, index) => (

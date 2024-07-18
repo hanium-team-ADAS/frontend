@@ -1,5 +1,5 @@
 .doctorList {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     max-height: 220px;
     overflow-y: auto; /* 세로 스크롤 설정 */

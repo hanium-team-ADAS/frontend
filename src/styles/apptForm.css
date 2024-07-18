@@ -13,16 +13,16 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 10px;
+    gap: 1%;
     margin-bottom: 20px; /* 아래쪽 여백 추가 */
 }
 
 .appt-input {
-    width: 30%;
+    width: 23%;
 }
 
 textarea {
-    width: 98%;
+    width: 95%;
     height: 80px;
 }
 
