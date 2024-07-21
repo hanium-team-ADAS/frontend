@@ -22,6 +22,7 @@ const StyledTakeTemp = styled(TakeTemp)`
 const TreatPage = () => {
     return (
         <div className="treatPage">
+            <div className='warnning-text'>화면이 너무 작습니다.<br/>전체화면으로 변경하세요.</div>
             <div className='leftSide'>
                 <OppVideo />
                 <div className="buttons">

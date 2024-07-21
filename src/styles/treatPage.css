@@ -34,3 +34,19 @@
 .buttons button:hover {
     background: #0056b3;
 }
+
+.warnning-text {
+    display: none;
+}
+
+@media (max-width: 1000px) {
+    .leftSide, .rightSide {
+        display: none;
+    }
+
+    .warnning-text {
+        display: flex;
+        color: #000;
+        font-size: 2rem;
+    }
+}

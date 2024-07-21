@@ -1,13 +1,13 @@
 .nav {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 2rem;
-    z-index: 1000;  /* 다른 요소들보다 위에 표시 */
+    padding: 1rem 2rem;
+    z-index: 1000;
   }
   
   .nav-logo {
@@ -42,9 +42,9 @@
     color: #fff;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     .nav {
-      padding: 10px 1rem;
+      padding: 0.5rem 1rem;
     }
   
     .nav-logo {
