@@ -2,26 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { getMinMaxDates } from '../../utils/dateUtils';
 import '../../styles/apptForm.css'
 
-const ApptForm = () => {
+const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) => {
   const [minDate, setMinDate] = useState('');
   const [maxDate, setMaxDate] = useState('');
-  const [doctorData, setDoctorData] = useState([]);
-  const [selectedDoctorIndex, setSelectedDoctorIndex] = useState(-1);
 
   useEffect(() => {
     const { minDate, maxDate } = getMinMaxDates();
     setMinDate(minDate);
     setMaxDate(maxDate);
-
-    // 의사 데이터 가져오기
-    fetch('/data/doctor.json')
-      .then(response => response.json())
-      .then(data => setDoctorData(data))
-      .catch(error => console.error('Error fetching data:', error));
   }, []);
 
   const handleDoctorChange = (event) => {
-    setSelectedDoctorIndex(event.target.value);
+    setSelectedDoctorIndex(parseInt(event.target.value));
   };
 
   return (
@@ -29,10 +21,10 @@ const ApptForm = () => {
       <form>
         <div className='appt-inputs'>
             <div className="appt-input">
-              <select onChange={handleDoctorChange}>
+              <select value={selectedDoctorIndex} onChange={handleDoctorChange}>
                 <option value="-1">의사 선택</option>
                   {doctorData.map((doctor, index) => (
-                      <option key={index} value={index}>{doctor.name}</option>
+                    <option key={index} value={index}>{doctor.name}</option>
                   ))}
               </select>
             </div>
