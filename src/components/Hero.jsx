@@ -7,8 +7,8 @@ import '../styles/hero.css'
 const Hero = () => {
   const navigate = useNavigate();
 
-  const moveToReservation= () => {
-    navigate('/reservation');
+  const moveToAppt= () => {
+    navigate('/appointment');
   }
 
   let heroData = {text1:'365일 비대면 진료가\n가능합니다',
@@ -22,7 +22,7 @@ const Hero = () => {
         <div className='sub-text'>
           <p>{heroData.text2.split('\n').map((line, index) => <React.Fragment key={index}>{line}<br/></React.Fragment>)}</p>
         </div>
-        <div className='hero-button' onClick={moveToReservation}>
+        <div className='hero-button' onClick={moveToAppt}>
           <p>진료 예약</p>
         </div>
         <div className='logo'>
