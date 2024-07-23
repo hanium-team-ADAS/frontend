@@ -10,7 +10,7 @@ const PatientSignUp = () => {
     };
 
     return (
-        <div className='signUp-component'>
+        <div className='PatientSignUp-component'>
             <div className='header'>
                 <div className='text'>회원가입</div>
             </div>

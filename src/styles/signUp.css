@@ -1,17 +1,13 @@
-.signup-component {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 2rem;
-    margin-top: 80px;
-    height: 100vh;
-    width: 100%;
-    max-width: 600px;
+  .DoctorSignUp-component {
+    padding: 2rem;
+  }
+
+  .PatientSignUp-component {
     padding-bottom: 2rem;
-    }
+  }  
   
   .header {
+    margin-top: 30px;
     margin-bottom: 30px;
     text-align: center;
   }
@@ -95,7 +91,7 @@
     background: #0056b3;
   }
   
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
     .sign-component {
       width: 90%;
       padding: 20px;
