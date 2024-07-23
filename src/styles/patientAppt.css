@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-content: space-between; /* 왼쪽과 오른쪽으로 요소 배치 */
     gap: 5vw;
+    margin: 1rem;
   }
 
   .makeAppt, .calendar {
@@ -23,7 +24,7 @@
       display: flex;
       flex-direction: column;
       justify-content:center;
-      margin-top: 28rem;
+      margin-top: 32rem;
       padding-bottom: 20px;
     }
 

@@ -43,13 +43,11 @@ const PatientAppt = () => {
         <h2>예약 조회</h2>
         <Calendar
             locale="en-US" // 일요일부터 시작
-            selected={selectedDate}
+            value={selectedDate}
             onChange={handleDateChange}
-            dateFormat="yyyy-MM-dd"
+
         />
-        {selectedDate && (
-          <ApptDates date={format(selectedDate, 'yyyy-MM-dd')} />
-        )}
+        <ApptDates date={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null} />
       </div>
     </div>
   );
