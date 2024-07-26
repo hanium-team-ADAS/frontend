@@ -2,7 +2,7 @@
     {
         "id": 1,
         "professor": "Kim",
-        "date": "2024-07-20",
+        "date": "2024-07-27",
         "time": "10:00 AM"
     },
     {
@@ -16,5 +16,11 @@
         "professor": "Park",
         "date": "2024-07-22",
         "time": "11:00 AM"
+    },
+    {
+        "id": 4,
+        "professor": "Park",
+        "date": "2024-07-27",
+        "time": "04:00 PM"
     }
 ]
