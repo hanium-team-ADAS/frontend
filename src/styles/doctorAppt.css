@@ -1,19 +1,53 @@
 .doctorAppt {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* 왼쪽과 오른쪽으로 요소 배치 */
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 80vw;
+  max-width: 1200px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+}
+
+.doctorAppt h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.8em;
+  font-weight: 600;
+}
 
 .checkAppt {
-    display: flex;
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  gap: 2vw;
+}
+
+.checkAppt p {
+  font-size: 1.2em;
+  color: #666;
+}
+
+.react-calendar {
+  width: 100%;
+  border: none;
+}
+
+@media (max-width: 800px) {
+  .checkAppt {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 801px) {
+  .checkAppt {
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    margin: 20px;
-    gap: 5vw;
+  }
 }
