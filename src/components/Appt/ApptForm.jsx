@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getMinMaxDates } from '../../utils/dateUtils';
+import { timeOptions } from '../../utils/timeOptions';
 import '../../styles/apptForm.css'
 
 const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) => {
@@ -35,7 +36,14 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
               <input type='date' min={minDate} max={maxDate}></input>
             </div>
             <div className="appt-input">
-              <input id='appt-time' type='time' name='appt-time' />
+              <select required id="appt-time" name="appt-time">
+                <option value="-1">시간 선택</option>
+                  {timeOptions.map((time, index) => (
+                      <option key={index} value={time}>
+                          {time}
+                      </option>
+                  ))}
+              </select>
             </div>
           </div>
           <div className='appt-textarea'>
