@@ -23,7 +23,7 @@ const Navbar = () => {
 
     return (
         <div className='nav'>
-            <div className="nav-logo">원격진료시스템</div>
+            <div className="nav-logo"> 원격진료시스템 by ADAS</div>
             <ul className="nav-menu">
                 <li className="nav-home" onClick={moveToHome}>홈</li>
                 <li className="nav-appointment" onClick={moveToAppointment}>예약</li>
