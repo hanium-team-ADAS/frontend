@@ -4,6 +4,13 @@
     justify-content: space-between; /* 왼쪽과 오른쪽으로 요소 배치 */
     gap: 5vw;
     margin: 1rem;
+    padding-top: 60px;
+  }
+
+  .patientAppt h2 {
+    font-family: "Do Hyeon";
+    font-size: 28px;
+    font-weight: lighter;
   }
 
   .makeAppt, .calendar {

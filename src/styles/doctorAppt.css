@@ -1,3 +1,7 @@
+.doctorAppt-components {
+  padding-top: 30px;
+}
+
 .doctorAppt {
   display: flex;
   flex-direction: column;
@@ -16,8 +20,9 @@
 .doctorAppt h2 {
   margin-bottom: 20px;
   color: #333;
-  font-size: 1.8em;
-  font-weight: 600;
+  font-family: "Do Hyeon";
+  font-size: 2rem;
+  font-weight: 400;
 }
 
 .checkAppt {
@@ -41,6 +46,9 @@
 }
 
 @media (max-width: 800px) {
+  .doctorAppt-components {
+    padding-top: 90px;
+  }
   .checkAppt {
     flex-direction: column;
   }
