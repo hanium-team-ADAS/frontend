@@ -1,11 +1,9 @@
   .DoctorSignUp-component {
     font-family: "Do Hyeon";
-    padding-top: 100px;
   }
 
   .PatientSignUp-component {
     font-family: "Do Hyeon";
-    padding-top: 40px;
   }  
   
   .header {
@@ -47,13 +45,13 @@
     width: 100%;
   }
   
-  .input-phone {
+  .input-rrn {
     display: flex;
     gap: 5px;
     align-items: center;
   }
   
-  .input-phone input {
+  .input-rrn input {
     text-align: center;
   }
   
