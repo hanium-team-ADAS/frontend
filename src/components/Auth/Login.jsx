@@ -35,6 +35,8 @@ const Login = () => {
                 password: user.password
             });
             alert(response.data);
+            alert(user.email + ' 님 좋은 하루 되세요.')
+            navigate('/');
         } catch (error) {
             alert('Login failed');
         }

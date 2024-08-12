@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { getMinMaxDates } from '../../utils/dateUtils';
 import { timeOptions } from '../../utils/timeOptions';
+import api from '../../services/api';
 import '../../styles/apptForm.css'
 
 const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) => {
+  // 예약 가능한 날짜 범위
   const [minDate, setMinDate] = useState('');
   const [maxDate, setMaxDate] = useState('');
 
@@ -13,13 +15,40 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
     setMaxDate(maxDate);
   }, []);
 
+  // 의사 선택 변경 시 호출되는 핸들러
   const handleDoctorChange = (event) => {
     setSelectedDoctorIndex(parseInt(event.target.value));
   };
 
+  const [newAppt, setNewAppt] = useState({
+    doctor: '',
+    date:'',
+    time:''
+  });
+
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setNewAppt({ ...newAppt, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+        const response = await api.post('/', {
+            doctor: newAppt.doctor,
+            date: newAppt.date,
+            time: newAppt.time
+        });
+        alert(response.data);
+      } catch (error) {
+        alert('Submit failed');
+      }
+  };
+
   return (
     <div className='appt-container'>
-      <form>
+      <form className='appt-form' onSubmit={handleSubmit}>
         <div className='appt-inputs'>
             <div className="appt-input">
               <select value={selectedDoctorIndex} onChange={handleDoctorChange}>
@@ -33,7 +62,7 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
               <input type='text' value={selectedDoctorIndex !== -1 ? doctorData[selectedDoctorIndex].major : ''} readOnly />
             </div>
             <div className="appt-input">
-              <input type='date' min={minDate} max={maxDate}></input>
+              <input type='date' name='date' onChange={handleChange} min={minDate} max={maxDate}></input>
             </div>
             <div className="appt-input">
               <select required id="appt-time" name="appt-time">
