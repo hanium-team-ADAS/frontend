@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
 import '../styles/navbar.css'
 
-const Navbar = () => {
+const Navbar = ({ onHeightChange }) => {
+    const navbarRef = useRef(null);
     const navigate = useNavigate();
 
     const moveToHome= () => {
@@ -21,8 +22,23 @@ const Navbar = () => {
         navigate('/login');
     }
 
+    useEffect(() => {
+        const updateNavbarHeight = () => {
+          if (navbarRef.current) {
+            onHeightChange(navbarRef.current.offsetHeight);
+          }
+        };
+    
+        updateNavbarHeight();
+        window.addEventListener('resize', updateNavbarHeight);
+
+        return () => {
+          window.removeEventListener('resize', updateNavbarHeight);
+        };
+      }, [onHeightChange]);
+
     return (
-        <div className='nav'>
+        <div ref={navbarRef} className='nav'>
             <div className="nav-logo"> 원격진료시스템 by ADAS</div>
             <ul className="nav-menu">
                 <li className="nav-home" onClick={moveToHome}>홈</li>
