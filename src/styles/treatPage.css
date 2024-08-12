@@ -15,6 +15,24 @@
     flex-direction: column;
 }
 
+.oppVideo {
+    height: 70vh;
+    width: 90vh;
+}
+
+.myVideo {
+    height: 40vh;
+    width: 50vh;
+}
+
+video {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    display: block;
+}
+
 .buttons {
     display: flex;
     justify-content: center; /* 좌우로 요소 배치 */

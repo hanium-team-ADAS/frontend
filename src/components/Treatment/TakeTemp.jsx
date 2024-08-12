@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
+import api from '../../services/api'
 import '../../styles/takeTemp.css'
 
 const TakeTemp = ({className}) => {
   const [isReady, setIsReady] = useState(false);
   const [temperature, setTemperature] = useState(null);
   const [error, setError] = useState(null);
+  
+  const takeTemperature = async () => {
+    try {
+        await api.post('/picture/snap');
+
+        const receivedValue = await api.get('/picture/snap');
+        //const receivedValue = response.data.bodyTemperature;
+
+        if (receivedValue >= 30 && receivedValue <= 45) {
+          setError(null);
+          setTemperature(receivedValue);
+        } else {
+          alert('유효한 범위(30.0℃~45.0℃)를 벗어났습니다. 재촬영해주세요.');
+          setError('');
+          setTemperature(null);
+        }
+    } catch (error) {
+        alert('failed');
+    }
+  };
 
   const prepareMeasurement = () => {
     alert('정확한 측정을 위해 마스크와 외투를 벗어주세요')
     setIsReady(true);
     setTemperature(null);
     setError(null);
-  };
-
-  const takeTemperature = () => {
-    const simulatedTemp = (Math.random() * (50 - 20) + 20).toFixed(1);
-    const temp = parseFloat(simulatedTemp);
-
-    if (temp < 30 || temp > 45) {
-      alert('유효한 범위(30.0℃~45.0℃)를 벗어났습니다. 재촬영해주세요.');
-      setError('');
-      setTemperature(null);
-    } else {
-      setError(null);
-      setTemperature(temp);
-    }
   };
 
   return (
