@@ -14,8 +14,8 @@ const DoctorSignUp = () => {
         email: '',
         password: '',
         specialization: '',
-        license_number: '',
-        phone: ''
+        phone: '',
+        licenseNumber: ''
     });
 
     const handleChange = (e) => {
@@ -60,12 +60,12 @@ const DoctorSignUp = () => {
             <div className="field-signUp">
                 <div className='field-name'>전공</div>
                 <input type="text" className='input' placeholder='전공 입력' name='specialization'
-                    value={user.major} onChange={handleChange} required />
+                    value={user.specialization} onChange={handleChange} required />
             </div>
             <div className="field-signUp">
                 <div className='field-name'>면허정보</div>
-                <input type="text" className='input' placeholder="면허번호 입력" name='license_number'
-                    value={user.license} onChange={handleChange} required />
+                <input type="text" className='input' placeholder="면허번호 입력" name='licenseNumber'
+                    value={user.licenseNumber} onChange={handleChange} required />
             </div>
             <div className='field-signUp'>
                 <div className='field-name'>전화번호</div>
