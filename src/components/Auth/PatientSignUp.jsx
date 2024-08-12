@@ -23,11 +23,42 @@ const PatientSignUp = () => {
         setUser({ ...user, [name]: value });
     };
 
+    // Change Date Format
+    const processUserDetails = () => {
+        const { dateOfBirth, gender } = user;
+
+        // Process dateOfBirth
+        const year = dateOfBirth.slice(0, 2);
+        const month = dateOfBirth.slice(2, 4);
+        const day = dateOfBirth.slice(4, 6);
+
+        let yearPrefix = '';
+        if (gender === '1' || gender === '3') {
+            yearPrefix = '19';
+        } else if (gender === '2' || gender === '4') {
+            yearPrefix = '20';
+        }
+
+        const formattedDateOfBirth = `${yearPrefix}${year}-${month}-${day}`;
+
+        // Process gender
+        let genderValue = '';
+        if (gender === '1' || gender === '3') {
+            genderValue = '0';
+        } else if (gender === '2' || gender === '4') {
+            genderValue = '1';
+        }
+
+        return { ...user, dateOfBirth: formattedDateOfBirth, gender: genderValue };
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const processedUser = processUserDetails();
+
         try {
-            const response = await api.post('/patient/sign-up', user);
+            const response = await api.post('/patient/sign-up', processedUser);
             alert(response.data);
             alert(user.name + ' 님 환영합니다.\n로그인 페이지로 이동합니다.')
             navigate('/login');
