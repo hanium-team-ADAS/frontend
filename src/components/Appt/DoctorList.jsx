@@ -25,7 +25,7 @@ const DoctorList = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex })
             {doctorData.map((doctor, index) => (
                 <tr key={index}>
                     <td>{doctor.name}</td>
-                    <td>{doctor.major}</td>
+                    <td>{doctor.specialization}</td>
                     <td>
                         <form name='doctorListForm'>
                             <input type='checkbox' name="option" value={index}

@@ -7,6 +7,7 @@ import ApptDates from './ApptDates'
 import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../styles/patientAppt.css'
+import api from '../../services/api';
 
 const PatientAppt = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -18,10 +19,16 @@ const PatientAppt = () => {
   };
 
   useEffect(() => {
-      fetch('/data/doctor.json')
-          .then(response => response.json())
-          .then(data => setDoctorData(data))
-          .catch(error => console.error('Error fetching data:', error));
+    const fetchDoctorData = async () => {
+      try {
+        const response = await api.fetch('/appointment/doctors');
+        setDoctorData(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDoctorData();
   }, []);
 
   return (
@@ -45,7 +52,6 @@ const PatientAppt = () => {
             locale="en-US" // 일요일부터 시작
             value={selectedDate}
             onChange={handleDateChange}
-
         />
         <ApptDates date={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null} />
       </div>
