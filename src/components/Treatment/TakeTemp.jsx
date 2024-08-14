@@ -11,8 +11,8 @@ const TakeTemp = ({className}) => {
     try {
         await api.post('/picture/snap');
 
-        const receivedValue = await api.get('/picture/snap');
-        //const receivedValue = response.data.bodyTemperature;
+        const response = await api.get('/picture/snap');
+        const receivedValue = response.data.temperature;
 
         if (receivedValue >= 30 && receivedValue <= 45) {
           setError(null);
