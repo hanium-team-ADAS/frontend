@@ -7,7 +7,7 @@ import ApptDates from './ApptDates'
 import { format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../styles/patientAppt.css'
-import api from '../../services/api';
+import api from '../../services/fetch';
 
 const PatientAppt = () => {
   const [selectedDate, setSelectedDate] = useState(null);
