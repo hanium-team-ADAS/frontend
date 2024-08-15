@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import io from 'socket.io-client';
 import Peer from 'simple-peer';
 import TakeTemp from './TakeTemp';
 import '../../styles/treatPage.css';
 import styled from 'styled-components';
-import oppDelayImg from '../../images/oppDelayImg.png'
-import myDelayImg from '../../images/myDelayImg.png'
+import oppDelayImg from '../../images/oppDelayImg.png';
+import myDelayImg from '../../images/myDelayImg.png';
+
+// 순환 참조 탐지
+import { stringify } from 'flatted';
 
 const StyledTakeTemp = styled(TakeTemp)`
     height: 30vh;
@@ -13,72 +15,179 @@ const StyledTakeTemp = styled(TakeTemp)`
 `;
 
 const TreatPage = () => {
-    const userVideo = useRef(); // 사용자 비디오 요소를 참조하는 변수
-    const partnerVideo = useRef();  // 상대방 비디오 요소를 참조하는 변수
-    const socket = useRef(); // 소켓 연결을 참조하는 변수
-    const [peerId, setPeerId] = useState(null); // 현재 피어 ID 상태
-    const [isCallActive, setIsCallActive] = useState(false); // 통화 상태 관리
-    
-    useEffect(() => {
-		 // 소켓 연결 설정
-         socket.current = io.connect('http://ec2-52-78-187-152.ap-northeast-2.compute.amazonaws.com:8080');
+    const userVideo = useRef(null);
+    const partnerVideo = useRef(null);
+    const socket = useRef(null);
+    const peer = useRef(null);
+    const [peerId, setPeerId] = useState(null);
+    const [isCallActive, setIsCallActive] = useState(false);
+    const [socketOpen, setSocketOpen] = useState(false);
 
-         // 서버로부터 'peerId' 이벤트 수신
-         socket.current.on('peerId', id => {
-             setPeerId(id);
-         });
- 
-         // 서버와의 연결 종료 시 소켓 해제
-         return () => socket.current.disconnect();
-	}, []);
+    const userId = getUserId("id");
+
+    function getUserId(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    useEffect(() => {
+        socket.current = new WebSocket('ws://localhost:8080/signal');
+
+        socket.current.onopen = () => {
+            console.log('WebSocket 서버에 연결되었습니다.');
+            setSocketOpen(true);
+        };
+
+        socket.current.onmessage = (message) => {
+            const data = JSON.parse(message.data);
+            console.log('받은 메시지:', data);
+
+            switch (data.type) {
+                case 'offer':
+                    handleOffer(data);
+                    break;
+                case 'answer':
+                    handleAnswer(data);
+                    break;
+                case 'candidate':
+                    handleCandidate(data);
+                    break;
+                case 'all_users':
+                    handleAllUsers(data);
+                    break;
+                case 'leave':
+                    handleLeave(data);
+                    break;
+                default:
+                    console.log('알 수 없는 메시지 타입:', data.type);
+            }
+        };
+
+        return () => {
+                socket.current?.close();
+        };
+    }, []);
+
+    const handleOffer = (data) => {
+        peer.current = new Peer({
+            initiator: false,
+            trickle: false,
+        });
+
+        peer.current.on('signal', (signalData) => {
+            console.log('Send signal:', signalData); // Debug log for signal data
+            if (socketOpen) {
+                socket.current.send(JSON.stringify({
+                    type: 'answer',
+                    sender: userId,
+                    receiver: data.sender,
+                    roomId: 1234,
+                    answer: {
+                        type: signalData.type,
+                        sdp: signalData.sdp,
+                    }
+                }));
+            } else {
+                console.log('웹소켓이 아직 열리지 않았습니다.');
+            }
+        });
+
+        peer.current.on('stream', (stream) => {
+            console.log('Received stream:', stream); // Debug log for stream
+            partnerVideo.current.srcObject = stream;
+        });
+
+        peer.current.signal(data.offer);
+    };
+
+    const handleAnswer = (data) => {
+        peer.current.signal(data.answer);
+    };
+
+    const handleCandidate = (data) => {
+        if (peer.current) {
+            console.log('Received candidate:', data.candidate); // Debug log for candidate
+            peer.current.signal(data.candidate);
+        }
+    };
+
+    const handleAllUsers = (data) => {
+        // Handle the 'all_users' type message if needed
+    };
+
+    const handleLeave = (data) => {
+        if (partnerVideo.current.srcObject) {
+            partnerVideo.current.srcObject.getTracks().forEach(track => track.stop());
+            partnerVideo.current.srcObject = null;
+        }
+        if (peer.current) {
+            peer.current.destroy();
+            peer.current = null;
+        }
+        setIsCallActive(false);
+    };
 
     const startCall = (remotePeerId) => {
-        // 사용자의 비디오 및 오디오 스트림 가져오기
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-            .then(stream => {
-                userVideo.current.srcObject = stream;   // 사용자 비디오 요소에 스트림을 할당
-                
-                // Peer 객체를 생성하여 통화 시작
-                const peer = new Peer({
-                    initiator: true,
-                    trickle: false,
-                    stream: stream,
-                });
+        if (socketOpen) {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    userVideo.current.srcObject = stream;
 
-                // 생성된 신호 데이터를 서버로 전송
-                peer.on('signal', data => {
-                    socket.current.emit('signal', { to: remotePeerId, data });
-                });
+                    peer.current = new Peer({
+                        initiator: true,
+                        trickle: false,
+                        stream: stream,
+                    });
 
-                // 상대방의 스트림을 받아 partnerVideo.current.srcObject에 할당
-                peer.on('stream', partnerStream => {
-                    partnerVideo.current.srcObject = partnerStream;
-                });
+                    peer.current.on('signal', (signalData) => {
+                        console.log('Generated signal:', signalData); // Debug log for signal data
 
-                // 소켓을 통해 신호 데이터가 수신되면 peer.signal(data)를 호출하여 피어의 신호를 처리
-                socket.current.on('signal', ({ from, data }) => {
-                    if (from === remotePeerId) {
-                        peer.signal(data);
-                    }
-                });
+                        const message = {
+                            type: 'offer',
+                            sender: userId,
+                            receiver: remotePeerId,
+                            roomId: 1234,
+                            offer: {
+                                type: signalData.type,
+                                sdp: signalData.sdp,
+                            }
+                        };
 
-                // 통화 상태 활성화
-                setIsCallActive(true);
-            })
-            .catch(err => console.error(err));
+                        try {
+                            const jsonString = stringify(message);
+                            socket.current.send(jsonString);
+                        } catch (error) {
+                            console.error("JSON 변환 오류:", error);
+                        }
+                    });
+
+                    peer.current.on('stream', (partnerStream) => {
+                        console.log('Received partner stream:', partnerStream); // Debug log for partner stream
+                        partnerVideo.current.srcObject = partnerStream;
+                    });
+
+                    setIsCallActive(true);
+                })
+                .catch(err => console.error('미디어 장치 접근 오류:', err));
+        } else {
+            console.log('웹소켓이 아직 열리지 않았습니다.');
+        }
     };
 
     const endCall = () => {
-        // 현재 스트림 정리
         if (userVideo.current.srcObject) {
-            userVideo.current.srcObject.getTracks().forEach(track => track.stop()); // 모든 미디어 트랙 중지
-            userVideo.current.srcObject = null; // 스트림 제거
+            userVideo.current.srcObject.getTracks().forEach(track => track.stop());
+            userVideo.current.srcObject = null;
         }
         if (partnerVideo.current.srcObject) {
-            partnerVideo.current.srcObject = null; // 스트림 제거
+            partnerVideo.current.srcObject = null;
+        }
+        if (peer.current) {
+            peer.current.destroy();
+            peer.current = null;
         }
 
-        // 통화 상태 비활성화
         setIsCallActive(false);
     };
 
@@ -86,17 +195,17 @@ const TreatPage = () => {
         <div className="treatPage">
             <div className='warnning-text'>화면이 너무 작습니다.<br/>전체화면으로 변경하세요.</div>
             <div className='leftSide'>
-                <video className='oppVideo' playsInline ref={partnerVideo} autoPlay 
-                    poster={oppDelayImg} />
+                <video className='oppVideo' playsInline ref={partnerVideo} autoPlay
+                       poster={oppDelayImg} />
                 <div className="buttons">
-                    <button onClick={() => startCall('remotePeerId')} disabled={isCallActive}>통화 시작</button>
+                    <button onClick={() => startCall(peerId)} disabled={isCallActive}>통화 시작</button>
                     <button onClick={endCall} disabled={!isCallActive}>통화 종료</button>
                 </div>
             </div>
             <div className='rightSide'>
                 <StyledTakeTemp />
                 <video className='myVideo' playsInline muted ref={userVideo} autoPlay
-                    poster={myDelayImg} />
+                       poster={myDelayImg} />
             </div>
         </div>
     );
