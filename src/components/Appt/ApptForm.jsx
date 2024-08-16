@@ -4,10 +4,15 @@ import { timeOptions } from '../../utils/timeOptions';
 import api from '../../services/api';
 import '../../styles/apptForm.css'
 
-const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) => {
-  // 예약 가능한 날짜 범위
+const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex, patientId, setPatientId }) => {
   const [minDate, setMinDate] = useState('');
   const [maxDate, setMaxDate] = useState('');
+  const [newAppt, setNewAppt] = useState({
+    doctorId: null,
+    date: '',
+    time: '',
+    symptoms: ''
+  });
 
   useEffect(() => {
     const { minDate, maxDate } = getMinMaxDates();
@@ -15,16 +20,22 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
     setMaxDate(maxDate);
   }, []);
 
-  // 의사 선택 변경 시 호출되는 핸들러
+  useEffect(() => {
+    if (selectedDoctorIndex >= 0 && selectedDoctorIndex < doctorData.length) {
+      setNewAppt(prevState => ({
+        ...prevState,
+        doctorId: doctorData[selectedDoctorIndex].id
+      }));
+    }
+  }, [selectedDoctorIndex, doctorData]);
+
+  useEffect(() => {
+    setPatientId(1);
+  }, []);
+
   const handleDoctorChange = (event) => {
     setSelectedDoctorIndex(parseInt(event.target.value));
   };
-
-  const [newAppt, setNewAppt] = useState({
-    doctor: '',
-    date:'',
-    time:''
-  });
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -33,13 +44,14 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (newAppt.doctorId === null) {
+      alert('Please select a doctor.');
+      return;
+    }
     
     try {
-        const response = await api.post('/', {
-            doctor: newAppt.doctor,
-            date: newAppt.date,
-            time: newAppt.time
-        });
+        const response = await api.post(`/appointment/create?patientId=${patientId}`, newAppt);
         alert(response.data);
       } catch (error) {
         alert('Submit failed');
@@ -54,18 +66,27 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
               <select value={selectedDoctorIndex} onChange={handleDoctorChange}>
                 <option value="-1">의사 선택</option>
                   {doctorData.map((doctor, index) => (
-                    <option key={index} value={index}>{doctor.name}</option>
+                    <option key={doctor.index} value={index}>
+                      {doctor.name}
+                    </option>
                   ))}
               </select>
             </div>
             <div className="appt-input">
-              <input type='text' value={selectedDoctorIndex !== -1 ? doctorData[selectedDoctorIndex].major : ''} readOnly />
+              <input type='text' value={selectedDoctorIndex !== -1 ? doctorData[selectedDoctorIndex].specialization : ''} readOnly />
             </div>
             <div className="appt-input">
-              <input type='date' name='date' onChange={handleChange} min={minDate} max={maxDate}></input>
+              <input
+                type='date'
+                name='date'
+                onChange={handleChange}
+                value={newAppt.date}
+                min={minDate}
+                max={maxDate}
+              />
             </div>
             <div className="appt-input">
-              <select required id="appt-time" name="appt-time">
+              <select required id="time" name="time" onChange={handleChange} value={newAppt.time}>
                 <option value="-1">시간 선택</option>
                   {timeOptions.map((time, index) => (
                       <option key={index} value={time}>
@@ -76,11 +97,16 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex }) =
             </div>
           </div>
           <div className='appt-textarea'>
-            <textarea>증상을 작성해주세요.</textarea>
+            <textarea
+              name='symptoms'
+              onChange={handleChange}
+              value={newAppt.symptoms}
+              placeholder='증상을 작성해주세요.'
+            />
           </div>
           <div className='appt-buttons'>
-            <div className='appt-submit'>예약</div>
-            <div className="appt-reset">취소</div>
+            <button type='submit' className='appt-submit'>예약</button>
+            <button type='button' className='appt-reset' onClick={() => setNewAppt({ doctorId: '', date: '', time: '', symptoms: '' })}>취소</button>
           </div>
       </form>
     </div>

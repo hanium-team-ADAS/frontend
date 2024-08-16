@@ -13,6 +13,7 @@ const PatientAppt = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [doctorData, setDoctorData] = useState([]);
   const [selectedDoctorIndex, setSelectedDoctorIndex] = useState(-1);
+  const [patientId, setPatientId] = useState(null);
 
   const handleDateChange = (date) => { 
     setSelectedDate(date);
@@ -44,6 +45,8 @@ const PatientAppt = () => {
           doctorData={doctorData}
           selectedDoctorIndex={selectedDoctorIndex}
           setSelectedDoctorIndex={setSelectedDoctorIndex}
+          patientId={patientId}
+          setPatientId={setPatientId}
         />
       </div>
       <div className='calendar'>
