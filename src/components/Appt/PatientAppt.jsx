@@ -13,7 +13,7 @@ const PatientAppt = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [doctorData, setDoctorData] = useState([]);
   const [selectedDoctorIndex, setSelectedDoctorIndex] = useState(-1);
-  const [patientId, setPatientId] = useState(null);
+  const [patientId, setPatientId] = useState(1);  // 수정필요
 
   const handleDateChange = (date) => { 
     setSelectedDate(date);
@@ -56,7 +56,9 @@ const PatientAppt = () => {
             value={selectedDate}
             onChange={handleDateChange}
         />
-        <ApptDates date={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null} />
+        <ApptDates date={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null}
+          patientId={patientId}
+        />
       </div>
     </div>
   );

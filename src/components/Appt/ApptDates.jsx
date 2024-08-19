@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import api from '../../services/fetch';
 import '../../styles/apptDate.css'
 
-const ApptDates = ({ date }) => {
+const ApptDates = ({ date, patientId }) => {
     const [appointments, setAppointments] = useState([]);
     const [selectedApptId, setSelectedApptId] = useState(null);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     useEffect(() => {
-        fetch('/data/apptDates.json')
-            .then(response => response.json())
-            .then(data => setAppointments(data))
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);
+        const fetchApptData = async () => {
+          try {
+            const response = await api.fetch(`/appointment/patient/${patientId}`);
+            setAppointments(response.data);
+          } catch (error) {
+            console.error(error);
+          }
+        };
+    
+        fetchApptData();
+      }, []);
 
     // 선택한 날짜와 일치하는 예약 필터링
     const filteredAppointments = appointments.filter(
@@ -53,7 +60,7 @@ const ApptDates = ({ date }) => {
                         <tbody>
                             {filteredAppointments.map((appointment, index) => (
                                 <tr key={index}>
-                                    <td>{appointment.professor}</td>
+                                    <td>{appointment.doctor.name}</td>
                                     <td>{appointment.date}</td>
                                     <td>{appointment.time}</td>
                                     <td>
