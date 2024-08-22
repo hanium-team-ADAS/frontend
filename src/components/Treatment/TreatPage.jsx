@@ -6,9 +6,6 @@ import styled from 'styled-components';
 import oppDelayImg from '../../images/oppDelayImg.png';
 import myDelayImg from '../../images/myDelayImg.png';
 
-// 순환 참조 탐지
-import { stringify } from 'flatted';
-
 const StyledTakeTemp = styled(TakeTemp)`
     height: 30vh;
     width: 50vh;
@@ -32,40 +29,50 @@ const TreatPage = () => {
     }
 
     useEffect(() => {
-        socket.current = new WebSocket('ws://localhost:8080/signal');
+        if (!socket.current) {
+            socket.current = new WebSocket('ws://localhost:8080/signal');
 
-        socket.current.onopen = () => {
-            console.log('WebSocket 서버에 연결되었습니다.');
-            setSocketOpen(true);
-        };
+            socket.current.onopen = () => {
+                console.log('WebSocket 서버에 연결되었습니다.');
+                setSocketOpen(true);
+            };
 
-        socket.current.onmessage = (message) => {
-            const data = JSON.parse(message.data);
-            console.log('받은 메시지:', data);
+            socket.current.onmessage = (message) => {
+                const data = JSON.parse(message.data);
+                console.log('받은 메시지:', data);
 
-            switch (data.type) {
-                case 'offer':
-                    handleOffer(data);
-                    break;
-                case 'answer':
-                    handleAnswer(data);
-                    break;
-                case 'candidate':
-                    handleCandidate(data);
-                    break;
-                case 'all_users':
-                    handleAllUsers(data);
-                    break;
-                case 'leave':
-                    handleLeave(data);
-                    break;
-                default:
-                    console.log('알 수 없는 메시지 타입:', data.type);
-            }
-        };
+                switch (data.type) {
+                    case 'offer':
+                        handleOffer(data);
+                        break;
+                    case 'answer':
+                        handleAnswer(data);
+                        break;
+                    case 'candidate':
+                        handleCandidate(data);
+                        break;
+                    case 'all_users':
+                        handleAllUsers(data);
+                        break;
+                    case 'leave':
+                        handleLeave(data);
+                        break;
+                    default:
+                        console.log('알 수 없는 메시지 타입:', data.type);
+                }
+            };
+
+            socket.current.onclose = (event) => {
+                console.log('WebSocket 연결이 해제되었습니다.', event);
+                setSocketOpen(false);
+                // 재연결을 시도하거나, 사용자에게 알림
+            };
+        }
 
         return () => {
-                socket.current?.close();
+            if (socket.current) {
+                socket.current.close();
+            }
         };
     }, []);
 
@@ -76,25 +83,23 @@ const TreatPage = () => {
         });
 
         peer.current.on('signal', (signalData) => {
-            console.log('Send signal:', signalData); // Debug log for signal data
+            console.log('Send signal:', signalData);
             if (socketOpen) {
-                socket.current.send(JSON.stringify({
+                const message = {
                     type: 'answer',
                     sender: userId,
                     receiver: data.sender,
                     roomId: 1234,
-                    answer: {
-                        type: signalData.type,
-                        sdp: signalData.sdp,
-                    }
-                }));
+                    answer: signalData,
+                };
+                socket.current.send(JSON.stringify(message));
             } else {
                 console.log('웹소켓이 아직 열리지 않았습니다.');
             }
         });
 
         peer.current.on('stream', (stream) => {
-            console.log('Received stream:', stream); // Debug log for stream
+            console.log('Received stream:', stream);
             partnerVideo.current.srcObject = stream;
         });
 
@@ -102,18 +107,20 @@ const TreatPage = () => {
     };
 
     const handleAnswer = (data) => {
-        peer.current.signal(data.answer);
+        if (peer.current) {
+            peer.current.signal(data.answer);
+        }
     };
 
     const handleCandidate = (data) => {
         if (peer.current) {
-            console.log('Received candidate:', data.candidate); // Debug log for candidate
+            console.log('Received candidate:', data.candidate);
             peer.current.signal(data.candidate);
         }
     };
 
     const handleAllUsers = (data) => {
-        // Handle the 'all_users' type message if needed
+        console.log('All users:', data.allUsers || []);
     };
 
     const handleLeave = (data) => {
@@ -130,6 +137,20 @@ const TreatPage = () => {
 
     const startCall = (remotePeerId) => {
         if (socketOpen) {
+            const joinRoomMessage = {
+                type: 'join_room',
+                sender: userId,
+                roomId: 1234,
+                receiver: remotePeerId
+            };
+
+            try {
+                socket.current.send(JSON.stringify(joinRoomMessage));
+                console.log('방 참여 메시지를 전송했습니다:', joinRoomMessage);
+            } catch (error) {
+                console.error("방 참여 메시지 전송 중 오류 발생:", error);
+            }
+
             navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then(stream => {
                     userVideo.current.srcObject = stream;
@@ -141,29 +162,25 @@ const TreatPage = () => {
                     });
 
                     peer.current.on('signal', (signalData) => {
-                        console.log('Generated signal:', signalData); // Debug log for signal data
+                        console.log('Generated signal:', signalData);
 
                         const message = {
                             type: 'offer',
                             sender: userId,
                             receiver: remotePeerId,
                             roomId: 1234,
-                            offer: {
-                                type: signalData.type,
-                                sdp: signalData.sdp,
-                            }
+                            offer: signalData,
                         };
 
                         try {
-                            const jsonString = stringify(message);
-                            socket.current.send(jsonString);
+                            socket.current.send(JSON.stringify(message));
                         } catch (error) {
                             console.error("JSON 변환 오류:", error);
                         }
                     });
 
                     peer.current.on('stream', (partnerStream) => {
-                        console.log('Received partner stream:', partnerStream); // Debug log for partner stream
+                        console.log('Received partner stream:', partnerStream);
                         partnerVideo.current.srcObject = partnerStream;
                     });
 
