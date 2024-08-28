@@ -2,25 +2,29 @@
     {
         "id": 1,
         "name": "Kim",
-        "date": "2024-07-20",
-        "time": "10:00 AM"
+        "date": "2024-08-20",
+        "time": "10:00 AM",
+        "status": 0
     },
     {
         "id": 2,
         "name": "Lee",
-        "date": "2024-07-21",
-        "time": "02:00 PM"
+        "date": "2024-08-22",
+        "time": "02:00 PM",
+        "status": 0
     },
     {
         "id": 3,
         "name": "Park",
-        "date": "2024-07-22",
-        "time": "11:00 AM"
+        "date": "2024-08-22",
+        "time": "11:00 AM",
+        "status": 1
     },
     {
         "id": 4,
         "name": "Choi",
-        "date": "2024-07-22",
-        "time": "12:00 PM"
+        "date": "2024-08-22",
+        "time": "12:00 PM",
+        "status": 2
     }
 ]
