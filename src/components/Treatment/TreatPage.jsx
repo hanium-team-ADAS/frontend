@@ -28,9 +28,20 @@ const TreatPage = () => {
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
+    // 메시지를 청크로 나누어 전송하는 함수
+    const sendInChunks = (message, chunkSize) => {
+        let offset = 0;
+
+        while (offset < message.length) {
+            const chunk = message.slice(offset, offset + chunkSize);
+            socket.current.send(JSON.stringify(chunk)); // 메시지를 JSON 형식으로 변환하여 전송
+            offset += chunkSize;
+        }
+    };
+
     useEffect(() => {
         if (!socket.current) {
-            socket.current = new WebSocket('ws://localhost:8080/signal');
+            socket.current = new WebSocket('ws://ec2-52-78-187-152.ap-northeast-2.compute.amazonaws.com:8080/signal');
 
             socket.current.onopen = () => {
                 console.log('WebSocket 서버에 연결되었습니다.');
@@ -92,7 +103,7 @@ const TreatPage = () => {
                     roomId: 1234,
                     answer: signalData,
                 };
-                socket.current.send(JSON.stringify(message));
+                sendInChunks(JSON.stringify(message), 100); // 청크로 메시지 전송
             } else {
                 console.log('웹소켓이 아직 열리지 않았습니다.');
             }
@@ -145,7 +156,7 @@ const TreatPage = () => {
             };
 
             try {
-                socket.current.send(JSON.stringify(joinRoomMessage));
+                sendInChunks(JSON.stringify(joinRoomMessage), 1024); // 청크로 방 참여 메시지 전송
                 console.log('방 참여 메시지를 전송했습니다:', joinRoomMessage);
             } catch (error) {
                 console.error("방 참여 메시지 전송 중 오류 발생:", error);
@@ -173,7 +184,7 @@ const TreatPage = () => {
                         };
 
                         try {
-                            socket.current.send(JSON.stringify(message));
+                            sendInChunks(JSON.stringify(message), 1024); // 청크로 메시지 전송
                         } catch (error) {
                             console.error("JSON 변환 오류:", error);
                         }
