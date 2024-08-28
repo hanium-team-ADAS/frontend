@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { handleAcceptReservation, handleRejectReservation } from '../../utils/updateRes';
 import api from '../../services/fetch';
 import '../../styles/apptDate.css'
 
@@ -10,8 +11,20 @@ const ApptDates = ({ date, patientId }) => {
     useEffect(() => {
         const fetchApptData = async () => {
           try {
-            const response = await api.fetch(`/appointment/patient/${patientId}`);
-            setAppointments(response.data);
+            //const response = await api.fetch(`/appointment/patient/${patientId}`);
+            const response = await fetch('http://localhost:3000/data/apptDates.json')
+            const data = await response.json();
+            const updatedData = data.map((appointment) => {
+                if (appointment.status === 0) {
+                    return { ...appointment, status: 'newAppt' };
+                } else if (appointment.status === 1) {
+                    return { ...appointment, status: 'accepted' };
+                } else if (appointment.status === 2) {
+                    return { ...appointment, status: 'rejected' };
+                }
+                return appointment;
+            });
+            setAppointments(updatedData);
           } catch (error) {
             console.error(error);
           }
@@ -29,16 +42,6 @@ const ApptDates = ({ date, patientId }) => {
         setSelectedApptId(id);
         setShowConfirmModal(true);
     };
-
-    const handleConfirmDelete = () => {
-        const updatedAppointments = appointments.filter(
-            appointment => appointment.id !== selectedApptId
-        );
-        setAppointments(updatedAppointments);
-        setShowConfirmModal(false);
-        setSelectedApptId(null);
-    };
-
     const handleCancelDelete = () => {
         setShowConfirmModal(false);
         setSelectedApptId(null);
@@ -59,19 +62,26 @@ const ApptDates = ({ date, patientId }) => {
                         </thead>
                         <tbody>
                             {filteredAppointments.map((appointment, index) => (
-                                <tr key={index}>
+                                <tr key={index} className={appointment.status === 'rejected' ? 'rejected' : ''}>
                                     <td>{appointment.doctor.name}</td>
                                     <td>{appointment.date}</td>
                                     <td>{appointment.time}</td>
-                                    <td>
-                                        <form>
-                                            <input
-                                                type='checkbox'
-                                                checked={selectedApptId === appointment.id}
-                                                onChange={() => handleCheckboxChange(appointment.id)}
-                                            />
-                                        </form>
-                                    </td>
+                                    {appointment.status === 'newAppt' ? (
+                                        <td>
+                                            <form>
+                                                <input 
+                                                    type='checkbox' 
+                                                    value={appointment.id}
+                                                    checked={selectedApptId === appointment.id}
+                                                    onChange={() => handleCheckboxChange(appointment.id)}
+                                                />
+                                            </form>
+                                        </td>
+                                    ) : (
+                                        <td className='appt_status'>
+                                            {appointment.status}
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
@@ -88,7 +98,7 @@ const ApptDates = ({ date, patientId }) => {
                     <div className="modal-content">
                         <span className="close" onClick={handleCancelDelete}>&times;</span>
                         <p>정말 예약을 취소하시겠습니까?</p>
-                        <button onClick={handleConfirmDelete}>확인</button>
+                        <button onClick={() => handleRejectReservation(appointments, selectedApptId, setAppointments, setShowConfirmModal, setSelectedApptId)}>확인</button>
                         <button onClick={handleCancelDelete}>취소</button>
                     </div>
                 </div>

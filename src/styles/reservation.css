@@ -22,3 +22,10 @@
   .resTable tr:nth-child(even) {
     background-color: #f9f9f9;
   }
+
+ .rejected {
+    text-decoration: line-through;
+    text-decoration-color: red;
+    text-decoration-style: double;
+  }
+  
