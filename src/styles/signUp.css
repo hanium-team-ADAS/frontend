@@ -1,0 +1,113 @@
+  .DoctorSignUp-component {
+    font-family: "Do Hyeon";
+  }
+
+  .PatientSignUp-component {
+    font-family: "Do Hyeon";
+  }  
+  
+  .header {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .text {
+    font-size: 35px;
+    font-weight: 400;
+  }
+  
+  .form-signUp {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80vw;
+    max-width: 500px;
+    margin-bottom: 1rem;
+  }
+
+  .field-signUp {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .field-name {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .field-signUp .input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .input-rrn {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  .input-rrn input {
+    text-align: center;
+  }
+  
+  .submit-signUp {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .submit-signUp input {
+    font-family: "Do Hyeon";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    border: 0px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .submit-signUp .submit {
+    background: #007bff;
+    color: #fff;
+  }
+  
+  .submit-signUp .backLogin {
+    background: #e0e0e0;
+    color: #666;
+  }
+  
+  .submit-signUp .submit:hover {
+    background: #0056b3;
+  }
+  
+  @media (max-width: 800px) {
+    .sign-component {
+      width: 90%;
+      padding: 20px;
+    }
+
+    .sign-component .input {
+      width: 90%;
+    }
+  
+    .header .text {
+      font-size: 28px;
+    }
+  
+    .sign-component .submit {
+      width: 120px;
+      height: 45px;
+    }
+  }
+  

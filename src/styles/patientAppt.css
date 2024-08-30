@@ -1,0 +1,40 @@
+.patientAppt {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* 왼쪽과 오른쪽으로 요소 배치 */
+    gap: 5vw;
+    margin: 1rem;
+  }
+
+  .patientAppt h2 {
+    font-family: "Do Hyeon";
+    font-size: 28px;
+    font-weight: lighter;
+  }
+
+  .makeAppt, .calendar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 40vw;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 800px) {
+    .patientAppt {
+      display: flex;
+      flex-direction: column;
+      justify-content:center;
+      margin-top: 32rem;
+      padding-bottom: 20px;
+    }
+
+    .makeAppt, .calendar {
+      width: 100%;
+    }
+}

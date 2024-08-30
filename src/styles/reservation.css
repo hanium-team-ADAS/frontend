@@ -1,0 +1,31 @@
+.resDates {
+    width: 90%;
+    font-size: 12px;
+    margin-bottom: 2rem;
+  }
+
+  .resTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .resTable th, .resTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .resTable th {
+    background-color: #f2f2f2;
+  }
+  
+  .resTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+ .rejected {
+    text-decoration: line-through;
+    text-decoration-color: red;
+    text-decoration-style: double;
+  }
+  

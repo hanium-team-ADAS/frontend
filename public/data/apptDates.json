@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "doctor": {
+            "name": "Choi"
+        },
+        "date": "2024-08-27",
+        "time": "10:00 AM",
+        "status": 0 
+    },
+    {
+        "id": 2,
+        "doctor": {
+            "name": "Kim"
+        },
+        "date": "2024-07-21",
+        "time": "02:00 PM",
+        "status": 0 
+    },
+    {
+        "id": 3,
+        "doctor": {
+            "name": "Lee"
+        },
+        "date": "2024-07-22",
+        "time": "11:00 AM",
+        "status": 0 
+    },
+    {
+        "id": 4,
+        "doctor": {
+            "name": "Park"
+        },
+        "date": "2024-08-27",
+        "time": "04:00 PM",
+        "status": 2
+    }
+]
