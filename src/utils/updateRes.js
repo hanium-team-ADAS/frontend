@@ -1,39 +1,56 @@
-// 상태 업데이트 및 서버에 요청을 보내는 공통 함수
-const updateAppointmentStatus = async (appointments, selectedApptIndex, newStatus) => {
-    const updatedAppointments = appointments.map((appointment, index) => {
-        if (index === selectedApptIndex) {
-            return { ...appointment, status: newStatus };
-        }
-        return appointment;
-    });
+import api from '../services/api'
 
+const updateAppointmentStatus = async (appointmentId, newStatus) => {
     try {
-        await fetch('/api/updateAppointment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedAppointments[selectedApptIndex]),
+        await api.put('/appointment/update-status', null, {
+            params: {
+                appointmentId: appointmentId,
+                status: newStatus
+            }
         });
     } catch (error) {
         console.error('Error updating appointment:', error);
+        throw error;
     }
-
-    return updatedAppointments;
 };
 
 // 예약 수락 함수
-const handleAcceptReservation = async (appointments, selectedApptIndex, setAppointments, setShowConfirmModal, setSelectedApptIndex) => {
-    const updatedAppointments = await updateAppointmentStatus(appointments, selectedApptIndex, 'accepted');
-    setAppointments(updatedAppointments);
-    setShowConfirmModal(false);
-    setSelectedApptIndex(-1);
+export const handleAcceptReservation = async (appointments, selectedApptIndex, setAppointments, setShowConfirmModal, setSelectedApptIndex) => {
+    const selectedAppointment = appointments[selectedApptIndex];
+
+    try {
+        await updateAppointmentStatus(selectedApptIndex, 1);
+        
+        // 로컬 상태 업데이트
+        const updatedAppointments = appointments.map((appointment, id) => 
+            id === selectedApptIndex ? { ...appointment, status: 1 } : appointment
+        );
+        setAppointments(updatedAppointments);
+    } catch (error) {
+        console.error('Failed to accept reservation:', error);
+    } finally {
+        setShowConfirmModal(false);
+        setSelectedApptIndex(-1);
+    }
 };
 
 // 예약 거절 함수
-const handleRejectReservation = async (appointments, selectedApptIndex, setAppointments, setShowConfirmModal, setSelectedApptIndex) => {
-    const updatedAppointments = await updateAppointmentStatus(appointments, selectedApptIndex, 'rejected');
-    setAppointments(updatedAppointments);
-    setShowConfirmModal(false);
-    setSelectedApptIndex(-1);
+export const handleRejectReservation = async (appointments, selectedApptIndex, setAppointments, setShowConfirmModal, setSelectedApptIndex) => {
+    const selectedAppointment = appointments[selectedApptIndex];
+    await api.post(`/appointment/cancel`, selectedApptIndex);
+
+    try {
+        await updateAppointmentStatus(selectedApptIndex, 2);
+        
+        // 로컬 상태 업데이트
+        const updatedAppointments = appointments.map((appointment, id) => 
+            id === selectedApptIndex ? { ...appointment, status: 2 } : appointment
+        );
+        setAppointments(updatedAppointments);
+    } catch (error) {
+        console.error('Failed to reject reservation:', error);
+    } finally {
+        setShowConfirmModal(false);
+        setSelectedApptIndex(-1);
+    }
 };

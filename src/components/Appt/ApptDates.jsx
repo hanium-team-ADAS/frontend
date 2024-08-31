@@ -5,16 +5,14 @@ import '../../styles/apptDate.css'
 
 const ApptDates = ({ date, patientId }) => {
     const [appointments, setAppointments] = useState([]);
-    const [selectedApptId, setSelectedApptId] = useState(null);
+    const [selectedApptIndex, setSelectedApptIndex] = useState(-1); // selectedApptIndex로 변경
     const [showConfirmModal, setShowConfirmModal] = useState(false);
 
     useEffect(() => {
         const fetchApptData = async () => {
           try {
-            //const response = await api.fetch(`/appointment/patient/${patientId}`);
-            const response = await fetch('http://localhost:3000/data/apptDates.json')
-            const data = await response.json();
-            const updatedData = data.map((appointment) => {
+            const response = await api.fetch(`/appointment/patient/${patientId}`);
+            const updatedData = response.data.map((appointment) => {
                 if (appointment.status === 0) {
                     return { ...appointment, status: 'newAppt' };
                 } else if (appointment.status === 1) {
@@ -38,14 +36,16 @@ const ApptDates = ({ date, patientId }) => {
         (appointment) => appointment.date === date
     );
 
-    const handleCheckboxChange = (id) => {
-        setSelectedApptId(id);
+    const handleCheckboxChange = (index) => {
+        setSelectedApptIndex(index); // 인덱스를 상태로 설정
         setShowConfirmModal(true);
     };
+
     const handleCancelDelete = () => {
         setShowConfirmModal(false);
-        setSelectedApptId(null);
+        setSelectedApptIndex(-1);
     };
+
 
     return (
         <div className="apptDates">
@@ -62,7 +62,7 @@ const ApptDates = ({ date, patientId }) => {
                         </thead>
                         <tbody>
                             {filteredAppointments.map((appointment, index) => (
-                                <tr key={index} className={appointment.status === 'rejected' ? 'rejected' : ''}>
+                                <tr key={index} className={appointment.status === 2 ? 'rejected' : ''}>
                                     <td>{appointment.doctor.name}</td>
                                     <td>{appointment.date}</td>
                                     <td>{appointment.time}</td>
@@ -71,15 +71,16 @@ const ApptDates = ({ date, patientId }) => {
                                             <form>
                                                 <input 
                                                     type='checkbox' 
-                                                    value={appointment.id}
-                                                    checked={selectedApptId === appointment.id}
-                                                    onChange={() => handleCheckboxChange(appointment.id)}
+                                                    value={index}
+                                                    checked={selectedApptIndex === index}
+                                                    onChange={() => handleCheckboxChange(index)}
                                                 />
                                             </form>
                                         </td>
                                     ) : (
                                         <td className='appt_status'>
-                                            {appointment.status}
+                                            {appointment.status === 1 ? '수락' :
+                                            appointment.status === 2 ? '거절' : ''} 
                                         </td>
                                     )}
                                 </tr>
@@ -98,7 +99,7 @@ const ApptDates = ({ date, patientId }) => {
                     <div className="modal-content">
                         <span className="close" onClick={handleCancelDelete}>&times;</span>
                         <p>정말 예약을 취소하시겠습니까?</p>
-                        <button onClick={() => handleRejectReservation(appointments, selectedApptId, setAppointments, setShowConfirmModal, setSelectedApptId)}>확인</button>
+                        <button onClick={() => handleRejectReservation(filteredAppointments, selectedApptIndex, setAppointments, setShowConfirmModal, setSelectedApptIndex)}>거절</button>
                         <button onClick={handleCancelDelete}>취소</button>
                     </div>
                 </div>
