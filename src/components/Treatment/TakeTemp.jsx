@@ -9,8 +9,6 @@ const TakeTemp = ({className}) => {
   
   const takeTemperature = async () => {
     try {
-        await api.post('/picture/snap');
-
         const response = await api.get('/picture/snap');
         const receivedValue = response.data.temperature;
 
