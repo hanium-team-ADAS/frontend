@@ -8,9 +8,11 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
+    "firebase": "^10.13.1",
     "http-proxy-middleware": "^3.0.0",
     "react": "^18.3.1",
     "react-calendar": "^5.0.0",
+    "react-cookie": "^7.2.0",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
@@ -19,7 +21,8 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.11",
     "swagger-ui-react": "^5.17.14",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "ws": "^8.18.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,6 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://ec2-52-78-187-152.ap-northeast-2.compute.amazonaws.com:8080",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -44,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "msw": "^2.3.5"
   }
 }

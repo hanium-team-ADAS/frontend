@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api'
+import axios from 'axios';
 import '../../styles/takeTemp.css'
 
 const TakeTemp = ({className}) => {
@@ -9,7 +9,7 @@ const TakeTemp = ({className}) => {
   
   const takeTemperature = async () => {
     try {
-        const response = await api.get('/picture/snap');
+        const response = await axios.get('/picture/snap');
         const receivedValue = response.data.temperature;
 
         if (receivedValue >= 30 && receivedValue <= 45) {
