@@ -20,11 +20,13 @@ const AppRoutes = ({ paddingTop }) => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/doctorSignUp" element={<DoctorSignUp />} />
                 <Route path="/patientSignUp" element={<PatientSignUp />} />
-                <Route path="/appointment" element={
-                    <PrivateRoute>
-                        {userRole === 'patient' ? <PatientAppt /> : <DoctorAppt />}
-                    </PrivateRoute>
-                } />
+                {/*<Route path="/appointment" element={*/}
+                {/*    <PrivateRoute>*/}
+                {/*        {userRole === 'patient' ? <PatientAppt /> : <DoctorAppt />}*/}
+                {/*    </PrivateRoute>*/}
+                {/*} />*/}
+                <Route path="/doctorAppointment" element={<DoctorAppt />} />
+                <Route path="/patientAppointment" element={<PatientAppt />} />
                 <Route path='/treatment' element={<TreatPage />} />
             </Routes>
         </PaddingWrapper>
@@ -32,4 +34,5 @@ const AppRoutes = ({ paddingTop }) => {
 };
 
 export default AppRoutes;
+
 
