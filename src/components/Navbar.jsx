@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import '../styles/navbar.css';
@@ -6,9 +6,10 @@ import '../styles/navbar.css';
 const Navbar = ({ onHeightChange }) => {
     const navbarRef = useRef(null);
     const navigate = useNavigate();
-    const [cookies] = useCookies(['role']);
+    const [cookies, setCookie, removeCookie] = useCookies(['role']);
     const userRole = cookies.role || 'guest'; // 쿠키에서 role 가져오기
 
+    // 네비게이션 기능
     const moveToHome = () => {
         navigate('/');
     };
@@ -28,6 +29,12 @@ const Navbar = ({ onHeightChange }) => {
     };
 
     const moveToLogin = () => {
+        navigate('/login');
+    };
+
+    // 로그아웃 처리
+    const handleLogout = () => {
+        removeCookie('role');
         navigate('/login');
     };
 
@@ -53,11 +60,16 @@ const Navbar = ({ onHeightChange }) => {
                 <li className="nav-home" onClick={moveToHome}>홈</li>
                 <li className="nav-appointment" onClick={moveToAppointment}>예약</li>
                 <li className="nav-treatment" onClick={moveToTreatment}>진료</li>
-                <li className="nav-login" onClick={moveToLogin}>로그인</li>
+                {userRole === 'guest' ? (
+                    <li className="nav-login" onClick={moveToLogin}>로그인</li>
+                ) : (
+                    <li className="nav-login" onClick={handleLogout}>로그아웃</li>
+                )}
             </ul>
         </div>
     );
 };
 
 export default Navbar;
+
 

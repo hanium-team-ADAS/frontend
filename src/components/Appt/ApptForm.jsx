@@ -24,35 +24,31 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex, pat
     if (selectedDoctorIndex >= 0 && selectedDoctorIndex < doctorData.length) {
       setNewAppt(prevState => ({
         ...prevState,
-        doctorId: doctorData[selectedDoctorIndex].id
+        doctorId: doctorData[selectedDoctorIndex].id // 고유 ID 사용
       }));
     }
   }, [selectedDoctorIndex, doctorData]);
-
-  useEffect(() => {
-    setPatientId(1);
-  }, []);
 
   const handleDoctorChange = (event) => {
     setSelectedDoctorIndex(parseInt(event.target.value));
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
     setNewAppt({ ...newAppt, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (newAppt.doctorId === null) {
-      alert('Please select a doctor.');
+    if (newAppt.doctorId === null || newAppt.date === '' || newAppt.time === '') {
+      alert('Please complete all required fields.');
       return;
     }
     
     try {
         const response = await api.post(`/appointment/create?patientId=${patientId}`, newAppt);
-        alert(response.data);
+        alert('Appointment successfully created!');
       } catch (error) {
         alert('Submit failed');
       }
@@ -66,7 +62,7 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex, pat
               <select value={selectedDoctorIndex} onChange={handleDoctorChange}>
                 <option value="-1">의사 선택</option>
                   {doctorData.map((doctor, index) => (
-                    <option key={doctor.index} value={index}>
+                    <option key={doctor.id} value={index}>
                       {doctor.name}
                     </option>
                   ))}
@@ -106,7 +102,7 @@ const ApptForm = ({ doctorData, selectedDoctorIndex, setSelectedDoctorIndex, pat
           </div>
           <div className='appt-buttons'>
             <button type='submit' className='appt-submit'>예약</button>
-            <button type='button' className='appt-reset' onClick={() => setNewAppt({ doctorId: '', date: '', time: '', symptoms: '' })}>취소</button>
+            <button type='button' className='appt-reset' onClick={() => setNewAppt({ doctorId: null, date: '', time: '', symptoms: '' })}>취소</button>
           </div>
       </form>
     </div>
